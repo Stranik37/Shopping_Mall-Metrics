@@ -27,7 +27,7 @@ DELIMITER ','
 CSV HEADER;
 
 -- Далее рассчитаем все указанные выше метрики для 5-ти успешных торговых центров, по GMV, в разрере месячных когорт
--- И сразу же создадим таблицу на основе этих данных
+-- И сразу же создадим таблицу с этими данными
 CREATE TABLE shoppingMalls_metrics AS
 with t1 as (
 	select customer_id, date(date_trunc('month', min(invoice_date))) as cohort_month
@@ -64,4 +64,5 @@ order by shopping_mall, t1.cohort_month, date(date_trunc('month', invoice_date))
 select * from shoppingMalls_metrics;
 
 --Теперь загрузим данные в csv файл, для его дальнейшей передачи в BI Yandex DataLens
+
 COPY shoppingMalls_metrics TO 'C:/Portfolio/Project-Customer_Shopping/top_5_shopping_malls.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',');
