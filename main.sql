@@ -26,6 +26,20 @@ FROM 'C:/Portfolio/datasets/customer_shopping_data.csv'
 DELIMITER ','
 CSV HEADER;
 
+-- Проверим таблицу на наличие пустых значений
+SELECT * 
+FROM Customer_Shopping
+WHERE (invoice_no IS NULL OR invoice_no = ''
+       OR customer_id IS NULL OR customer_id = ''
+       OR gender IS NULL OR gender = ''
+	   OR age IS NULL
+	   OR category IS NULL OR category = ''
+	   OR quantity IS NULL
+	   OR price IS NULL
+	   OR payment_method IS NULL OR payment_method = ''
+	   OR invoice_date IS NULL
+	   OR shopping_mall IS NULL OR shopping_mall = '')
+
 -- Далее рассчитаем все указанные выше метрики для 5-ти успешных торговых центров, по GMV, в разрере месячных когорт
 -- И сразу же создадим таблицу с этими данными
 CREATE TABLE shoppingMalls_metrics AS
@@ -66,3 +80,4 @@ select * from shoppingMalls_metrics;
 --Теперь загрузим данные в csv файл, для его дальнейшей передачи в BI Yandex DataLens
 
 COPY shoppingMalls_metrics TO 'C:/Portfolio/Project-Customer_Shopping/top_5_shopping_malls.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',');
+
